@@ -1,0 +1,10 @@
+Plany rozbudowy:
+    a) zmiana założeń (zamiast jednego ciągu poleceń zestaw funkcji do głosowania na konkretny typ ankiety i skrypt układający z funkcji ciąg dostosowany do ankiety)
+    b) zbudowanie wersji do wszystkich typów ankiet
+    c) umożliwienie spamowania na ankietach z wieloma pytaniami
+    d) dodanie możliwości losowania odpowiedzi z podanego zbioru
+    e) możemy to ewentualnie skompilować
+
+jakieś jeszcze pomysły mile widziane
+
+raczej nie będziemy używać pliku zamachnaankiete w dokładnie takiej formie w jakiej jest teraz, ale się przyda
