@@ -4,6 +4,7 @@ Plany rozbudowy:
     c) umożliwienie spamowania na ankietach z wieloma pytaniami
     d) dodanie możliwości losowania odpowiedzi z podanego zbioru
     e) możemy to ewentualnie skompilować
+    f) można zrobić qui (niewiele to da, ale tak z braku laku czemu nie)
 
 jakieś jeszcze pomysły mile widziane
 
