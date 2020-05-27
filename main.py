@@ -16,14 +16,26 @@ class Target():
     def add(self, layer: Dict[str, str]) -> None:
         self.layers.update(layer) # dodawanie kolejnych warstw
     
-    def cloud(self, ans: str):
+    def cloud(self, ans: str) -> None:
+        xinp = r"/html/body/div[1]/div/div[2]/div[1]/form/fieldset/div/div/input"
         try:
-            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, r"/html/body/div[1]/div/div[2]/div[1]/form/fieldset/div/div/input")))
-            ent1 = self.driver.find_element_by_xpath(r"/html/body/div[1]/div/div[2]/div[1]/form/fieldset/div/div/input")
+            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, xinp)))
+            ent1 = self.driver.find_element_by_xpath(xinp)
             ent1.send_keys(ans)
             ent1.submit()
             WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, r"/html/body/div[1]/div/div[2]/div[1]/div[2]/h1")))
-        except TimeoutError:
+        except:
+            self.driver.close()
+
+    def opend(self, ans: str) -> None:
+        xinp = r"/html/body/div[1]/div/div[2]/div[1]/form/fieldset/div/textarea"
+        try:
+            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, xinp)))
+            ent = self.driver.find_element_by_xpath(xinp)
+            ent.send_keys(ans)
+            ent.submit()
+            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, r"/html/body/div[1]/div/div[2]/div[1]/div[2]/h1")))
+        except:
             self.driver.close()
 
     def run(self, iterations: int, pin: str) -> None:
