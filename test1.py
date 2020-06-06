@@ -8,8 +8,8 @@ opts.add_argument("--headless")
 
 driver = Chrome(ChromeDriverManager().install(), options=opts)
 target = Target(driver)
-target.add({'cloud':'tojestsprawadlaojcamateusza'})
-target.run(25, "187877")
+target.add({'cloud':'ambitny'})
+target.run(10, "296109")
 
 try:
     driver.close()
