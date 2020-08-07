@@ -7,10 +7,14 @@ from webdriver_manager.chrome import ChromeDriverManager
 from time import sleep
 from typing import Dict
 
-class Target():
-    def __init__(self, driver):
+class Target:
+    def __init__(self, mode: str, pin: str):
+        self.options = Options()
+        if mode == "headless":
+            self.options.add_argument("--headless")
         self.layers = dict() # słownik par {rodzaj_ankiety:odpowiedź}
-        self.driver = driver # używany driver
+        self.driver = Chrome(ChromeDriverManager().install(), options=self.options)
+        self.pin = pin
         self.ank = r"https://www.mentimeter.com/"
 
     def add(self, layer: Dict[str, str]) -> None:
@@ -20,9 +24,10 @@ class Target():
         xinp = r"/html/body/div[1]/div/div[2]/div[1]/form/fieldset/div/div/input"
         try:
             WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, xinp)))
-            ent1 = self.driver.find_element_by_xpath(xinp)
-            ent1.send_keys(ans)
-            ent1.submit()
+            ent1 = self.driver.find_elements_by_xpath(xinp)
+            for ent in ent1:
+                ent.send_keys(ans)
+                ent.submit()
             WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, r"/html/body/div[1]/div/div[2]/div[1]/div[2]/h1")))
         except:
             self.driver.close()
@@ -38,31 +43,51 @@ class Target():
         except:
             self.driver.close()
 
-    def run(self, iterations: int, pin: str) -> None:
-        keys = list(self.layers.keys())
-        items = list(self.layers.values())
-
+    def run(self, iterations: int) -> None:
         try:
             for i in range(iterations):
                 self.driver.get(self.ank)
                 WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, r"/html/body/div[1]/div[1]/header/div/div/form/input")))
                 ent = self.driver.find_element_by_xpath(r"/html/body/div[1]/div[1]/header/div/div/form/input")
-                ent.send_keys(pin)
+                ent.send_keys(self.pin)
                 ent.submit()
-                for l in range(len(keys)):
-                    eval(f"self.{keys[l]}('{items[l]}')")
+                k0 = list(self.layers.keys())[0]
+                eval(f"self.{k0}('{self.layers[k0]}')")
 
                 self.driver.delete_all_cookies()
         except:
             pass
-        try:
-            self.driver.close()
-        except:
-            pass
-        
+        self.layers.pop(k0)
 
-def main():
-    pass # chwilowy brak ustaleń
+
+def main() -> None:
+    actions = ["set", "run", "add", "break"]
+    while True:
+        action = input(">>> ")
+        try:
+            assert action in actions
+            if action == "set":
+                pin = input("pin: ")
+                mode = input("mode: ")
+                target = Target(mode, pin)
+            elif action == "add":
+                layer = input("type: ")
+                mess = input("message: ")
+                target.add({layer:mess})
+            elif action == "run":
+                it = int(input("iterations: "))
+                target.run(it)
+            else:
+                break
+            print(target.layers)
+        except:
+            print("error")
+        
+    try:
+        target.driver.close()
+    except:
+        pass
+
 
 if __name__ == "__main__":
     main()

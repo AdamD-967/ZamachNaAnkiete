@@ -7,9 +7,9 @@ opts = Options()
 opts.add_argument("--headless")
 
 driver = Chrome(ChromeDriverManager().install(), options=opts)
-target = Target(driver)
-target.add({'cloud':'ambitny'})
-target.run(10, "296109")
+target = Target(driver, "953436")
+target.add({'cloud':'ananasowa inkwizycja'})
+target.run(1)
 
 try:
     driver.close()
